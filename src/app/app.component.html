@@ -193,10 +193,15 @@
  </div>-->
  
   <!--<div class="example-sidenav-content" style="width: 100%; text-align: left;">-->
-  <mat-card class="map-card"> 
+  <!-- 
+  <mat-card class="map-card" style="display: flex; justify-content: center; margin:0; padding-top: 2px; !important;"> 
+  -->
+  <mat-card class="map-card" style="padding-top: 0px;"> 
     <app-map>Loading ...</app-map>
     <mat-card-header>
-      <mat-card-title>Monde</mat-card-title>
+      <mat-card-title style="display: flex; justify-content: center; !important;">	  
+                    <span class="display: flex; justify-content: center;">{{mapComponent.currentImpressStep_id}}</span>
+	  </mat-card-title>
     </mat-card-header> 
   
     <!--
