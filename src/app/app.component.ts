@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 import 'hammerjs/hammer';
 import { FormControl }      from '@angular/forms';
 import { ZoneSlidersComponent } from './zone-sliders/zone-sliders.component';
-import { ZoneSlidersService } from './zone-sliders.service';
+import { ZoneSlidersService } from './shared/zone-sliders.service';
 import { ZoneSliderItem }     from './zone-slider-item';
 import { ImpressService } from './shared/impress.service';
 import { ZonesService } from './shared/zones.service';
@@ -95,7 +95,15 @@ export class AppComponent implements OnInit, AfterViewInit, AfterViewChecked {
   
     console.log( "AppComponent ngOnInit" );
 	this.zonesService.getAllZones().subscribe((zones: any[]) => this.zones = zones);
-
+/*
+	this.zonesService.getAllLeafZones().subscribe((zones: any[]) => {
+				var i = zones.length;
+				for (; i >= 0; i--) { 
+				    this.zoneSlidersService.getZoneSliders(event.target.id).lenght
+					this.zonesService.setZoneValues(zones[i], values:number[]);
+				}
+			}
+*/			
     //this.zoneSliders = this.zoneSlidersService.getGeneralZoneSliders();
 	/*
 	this.impressService.stepEnter$.subscribe((event) => {
