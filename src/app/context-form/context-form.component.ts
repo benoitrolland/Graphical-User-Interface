@@ -129,6 +129,7 @@ export class ContextFormComponent  implements AfterViewInit, OnDestroy  {
 	var val = 0;
 	//TODO 
 	//setSelectedContext(zoneId,num);
+	this.contextChange.emit({value:event.value,index});
   }
   
 /* UNUSED when Angular (re)sets data-bound @Input properties 
