@@ -665,6 +665,7 @@ export class ZonesService {
 		let ctxtNum = this.selectedContextNums.get(zone);
 		let zoninit = zone;
 		zone = zone+"_"+ctxtNum;
+		//retrieve stored list then update it.
 		let values:number[] = this.zonesValues.get(zone);
 		console.log("values for: zone=" + zone+" are=", values);
 		values[valueIndex]=val;
