@@ -25,15 +25,16 @@ import { MatSlider, MatSlideToggle, MatSliderChange, MatSlideToggleChange } from
 					</mat-grid-tile>\
 					<mat-grid-tile  colspan="6" rowspan="1"  class="grid-right"><font size="2">{{data.value}}  ({{data?.unit}})</font></mat-grid-tile>\
 				</mat-grid-list>'
-})//style="border-bottom: 2px dashed grey;" md-row-height="fit" 
+})  //style="border-bottom: 2px dashed grey;" md-row-height="fit"
 export class TickSliderComponent implements ZoneSlider {
   @Input() data: any; 
   @Output('change') change:EventEmitter<any> = new EventEmitter<any>();
   @ViewChild(MatSlider) public valueSelector: MatSlider;
   
-  onChange($event){
+  //onChange($event){
+  onChange($event, value){
 	console.log("onChange $event=",$event);	
-	if($event != undefined){
+	if($event != undefined && $event.value != undefined){
 		this.data.value=$event.value;
 		this.valueSelector.value=$event.value;
 	}	
@@ -56,7 +57,7 @@ export class ToggleSliderComponent implements ZoneSlider {
   @Output('change') change:EventEmitter<any> = new EventEmitter<any>();
   @ViewChild(MatSlideToggle) public valueSelector: MatSlideToggle;
   //checked: boolean;
-  onChange($event){
+  onChange($event, value){
 	console.log("onChange $event=",$event);
     if($event != undefined){
 	    //this.checked=$event.checked;
@@ -75,7 +76,7 @@ export class UnknownDynamicComponent implements ZoneSlider {
   @Input() data: any; 
   @Output('change') change:EventEmitter<any> = new EventEmitter<any>();
   public valueSelector: MatSlideToggle;
-  onChange($event){}
+  onChange($event, value){}
 }
 
 @Component({
@@ -102,6 +103,8 @@ export class ZoneSlidersComponent implements AfterViewInit, OnDestroy {
     //working ok =-1console.log("this.currentSliderIndex=" + this.currentSliderIndex);
 	
   }
+  //to respect interface ?
+  //onChange($event, value){}
   
   setSliders(sliders: ZoneSliderItem[], id:String) { 
     //this.setSliders([],"none");
@@ -133,10 +136,13 @@ export class ZoneSlidersComponent implements AfterViewInit, OnDestroy {
   }
   
   //needed on selector: (change)="onChildChange($event)
-  onChildChange(event, index:number){
-	console.log('onChildChange(event,' + index + '): event: ', event);
+  onChange(event){}
+  onChildChange(event, sliderIndex:number){
+	console.log('onChildChange(event,' + sliderIndex + '): event: ', event);
 	var val = 0;
+	//event comes from a boolean choice slider
 	if(event.checked != undefined) val = (event.checked == true)?1:0;
+	//event comes from a range value selection slider
 	if(event.value != undefined) {
 	  /*
 		val unite = event.value % 10;
@@ -152,7 +158,7 @@ export class ZoneSlidersComponent implements AfterViewInit, OnDestroy {
 	
 	//if(typeof event.value  === "string")
 	console.log("zs: start setZoneValue");
-	this.zonesService.setZoneValue( this.zoneId, index, val );
+	this.zonesService.setZoneValue( this.zoneId, sliderIndex, val );
 	console.log("zs: end setZoneValue");
 	if(this.zoneId=="FR") {
 		console.log("zs: FR zonesColorsReady: " + this.zonesService.zonesColorsReady.get(this.zoneId));
@@ -206,11 +212,11 @@ export class ZoneSlidersComponent implements AfterViewInit, OnDestroy {
 	 let zoneSlider:ZoneSlider = (<ZoneSlider>componentRef.instance);
      zoneSlider.data = zoneSliderItem.data;	
 	 zoneSlider.change.subscribe(msg => this.onChildChange(msg,index));
+	 
+	 zoneSlider.data.value=zoneSlider.data.default;
 	 if(zoneSlider.valueSelector instanceof MatSlider){ 
-		zoneSlider.data.value=zoneSlider.data.default;
 		zoneSlider.valueSelector.value=zoneSlider.data.default;
-	 }else if(zoneSlider.valueSelector instanceof MatSlideToggle){	 
-		zoneSlider.data.value=zoneSlider.data.default;
+	 }else if(zoneSlider.valueSelector instanceof MatSlideToggle){	
 		zoneSlider.valueSelector.checked=zoneSlider.data.default;
 	 }
    }
